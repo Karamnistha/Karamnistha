@@ -1,0 +1,43 @@
+/* What items are generating the highest revenue? */
+
+SELECT SUM(total_price) AS total_earning, item_dim.item_key,item_name FROM   fact_table
+INNER JOIN item_dim
+ON fact_table.item_key = item_dim.item_key
+GROUP BY item_dim.item_key
+ORDER BY total_earning DESC
+
+/* Which suppliers have the highest revenue amongst all? */
+
+CODE: SELECT SUM(total_price) AS total_earning,supplier FROM fact_table
+INNER JOIN item_dim
+ON fact_table.item_key = item_dim.item_key
+GROUP BY supplier 
+ORDER BY total_earning DESC 
+
+/* Which countries are leading in manufacturing? */
+
+SELECT COUNT(*) AS items_sold,supplier,man_country FROM fact_table
+INNER JOIN item_dim
+ON fact_table.item_key = item_dim.item_key
+GROUP BY supplier,man_country 
+ORDER BY items_sold DESC
+
+/* Which are the districts with the most number of stores? */
+
+SELECT COUNT(*) AS number_of_stores,district FROM store_dim
+GROUP BY district
+ORDER BY number_of_stores DESC
+
+/* What quarter of the year is making the most revenue? */
+
+SELECT SUM(total_price) AS total_earning,quarter FROM time_dim
+INNER JOIN fact_table
+ON time_dim.time_key = fact_table.time_key
+GROUP BY quarter
+ORDER BY total_earning DESC
+
+/* What are the types of payments? */ 
+
+SELECT DISTINCT trans_type FROM trans_dim
+
+
